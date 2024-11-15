@@ -68,3 +68,8 @@ I added the always_ff loop into the **lfsr_&.sv** file, and made the change to t
 ``` 
 sreg <= {sreg[6:1], sreg[7] ^ sreg[3]};
 ```
+
+## Task 2 - Formula 1 Light Sequence
+#### Step 1 - Create the component f1_fsm.sv
+
+## Task 3 - Exploring the *clktick.sv* and the *delay.sv* modules
