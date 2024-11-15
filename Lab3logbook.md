@@ -74,6 +74,10 @@ sreg <= {sreg[6:1], sreg[7] ^ sreg[3]};
 ### Creating the component f1_fsm.sv
 This is the file that specifies the FSM for the lights. The lights turn on in sequence - the values of *data_out* are formed logically by a left shift of the current output, and adding a value of 1. It must be noted that the states only change when *en* is set to 1 - this can be toggled using the function **vbdFlag()**.
 
+#### Initialising states using enumeration
+
+
+#### Dealing with switchcases
 
 ### Connecting the FSM to Vbuddy
 
