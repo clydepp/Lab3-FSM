@@ -8,10 +8,6 @@ module f1_fsm (
     typedef enum {S0, S1, S2, S3, S4, S5, S6, S7, S8} light_state;
     light_state current_state, next_state;
 
-//     always_ff @ (posedge clk)
-//         if (rst | current_state==S0) count <= randval - 1'b1;
-//         else if (current_state==S8) count <= count - 1'b1;
-
     always_ff @(posedge clk, posedge rst)
         if (rst) current_state <= S0;
         else if (en) current_state <= next_state;

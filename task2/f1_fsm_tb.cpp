@@ -25,7 +25,7 @@ int main(int argc, char **argv, char **env){
 
     top->clk = 1;
     top->rst = 1;
-    top->en = 0;
+    top->en = 1;
 
     for (simcyc=0; simcyc <MAX_SIM_CYC; simcyc++){
         for (tick=0; tick<2; tick++){
