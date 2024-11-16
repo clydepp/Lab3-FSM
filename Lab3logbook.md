@@ -75,11 +75,46 @@ sreg <= {sreg[6:1], sreg[7] ^ sreg[3]};
 This is the file that specifies the FSM for the lights. The lights turn on in sequence - the values of *data_out* are formed logically by a left shift of the current output, and adding a value of 1. It must be noted that the states only change when *en* is set to 1 - this can be toggled using the function **vbdFlag()**.
 
 #### Initialising states using enumeration
-
+```
+typedef enum {S0, S1, S2, S3, S4, S5, S6, S7, S8} light_state;
+light_state current_state, next_state;
+```
+In the code above, a new type *light_state* is defined, with the characteristic of having 9 different states - where S0 is the state with no lights (*data->out* = 0) and the S8 is fully lit state. The line below initialises two new instances of the type *light_state*, as the current and next states have a relationship. This relationship is defined by the FSM and follows a fixed path.
 
 #### Dealing with switchcases
+The states can be dealt with using combinational logic, so the use of an *always_comb* block and a switch case allows the evaluation of the value of the next state. In this case, the next state is only one value, and does NOT depend on the input. 
+```
+always_comb begin
+    case (current_state)
+        S0      :     next_state = S1;
+        S1      :     next_state = S2;
+        S2      :     next_state = S3;
+        S3      :     next_state = S4;
+        S4      :     next_state = S5;
+        S5      :     next_state = S6;
+        S6      :     next_state = S7;
+        S7      :     next_state = S8;
+        S8      :     next_state = S0;
+        default :     next_state = current_state;                 
+    endcase
+end
+```
+With the code:
+* Make sure that both the case and the combinational logic blocks are closed with an `end` or `endcase` as seen.
+* There is also a combinational logic block for the outputs.
 
 ### Connecting the FSM to Vbuddy
-
+```
+vbdBar(top->data_out & 0xFF);
+```
+The main objective of this task is to display the FSM on the LED lights on the Vbuddy. The code above is what displays the values on the LEDs, but is seen that the data is **masked** by 0xFF. This is done so that the bits that are 1s can be kept, and the other values are 0. This is why a bitwise AND operation is applied.
 
 ## Task 3 - Exploring the *clktick.sv* and the *delay.sv* modules
+For my code: the N value is 25. This is the N required for my lights to flash at roughly 60bpm, running on a 14" Lenovo IdeaPad Pro5 (R7-8845HS).
+
+### What does N do/affect?
+#### N within the .sv file
+
+#### N within the testbench
+
+### Test yourself challenge
