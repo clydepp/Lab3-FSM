@@ -114,7 +114,40 @@ For my code: the N value is 25. This is the N required for my lights to flash at
 
 ### What does N do/affect?
 #### N within the .sv file
+```
+always_ff @ (posedge clk)
+    if (rst) begin
+        tick <= 1'b0;
+        count <= N;  
+        end
+    else if (en) begin
+        if (count == 0) begin
+            tick <= 1'b1;
+            count <= N;
+            end
+        else begin
+            tick <= 1'b0;
+            count <= count - 1'b1;
+            end
+        end
+```
+Within the SystemVerilog module, N is introduced as an input interface signal to the program with a bit width defined by the parameter *WIDTH* (at the top of the module). In the code, it can be seen that clktick is synchronous - running at intervals of the clock signal.
+
+The code above works by:
+* setting the *count* to N (from the Vbuddy). This occurs when *rst* is 1
+* otherwise, if the count is 0, then the chosen clock resets
+* the value of N is the number of clock cycles between each tick
+* the 'else' case is when *count* is not 0, so the count value decrements
 
 #### N within the testbench
+```
+if (top->tick)
+    {
+    vbdBar(lights);
+    lights = lights ^ 0xFF;
+    }
+```
+This outputs the bar of lights whenever the tick is set to 1. *lights* is initialised as a `main()` variable, at the top of the program, with value 0. The `^` operator performs an XOR between these two values, so `0x00 ^ 0xFF` would be 0xFF.
 
 ### Test yourself challenge
+This connects both **clktick** and **f1fsm**.
